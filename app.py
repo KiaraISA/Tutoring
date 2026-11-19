@@ -130,11 +130,13 @@ if not (DATA / "tutors.csv").exists():
     }]))
 
 
-def admin_password() -> str:
+def admin_password() -> str | None:
+    """The admin password comes ONLY from Streamlit secrets. No secret = admin stays locked."""
     try:
-        return st.secrets["ADMIN_PASSWORD"]
+        pw = str(st.secrets["ADMIN_PASSWORD"]).strip()
+        return pw or None
     except Exception:
-        return "keystone"
+        return None
 
 
 def rand(n: int) -> str:
